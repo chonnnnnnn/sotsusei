@@ -146,4 +146,4 @@ https://www.figma.com/design/CQcPLoA78uJcrTdJ51Ea4Q/%E5%8D%92%E5%88%B6?node-id=1
 
 
 ## ER図
-[![Image from Gyazo](https://i.gyazo.com/33dbe391a2d47d480ff0754a961b8884.png)](https://gyazo.com/33dbe391a2d47d480ff0754a961b8884)
+[![Image from Gyazo](https://i.gyazo.com/c80e091f40433e7ce563cd0fa7bafd30.png)](https://gyazo.com/c80e091f40433e7ce563cd0fa7bafd30)
