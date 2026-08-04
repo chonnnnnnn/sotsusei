@@ -168,4 +168,4 @@
 
 
  ### ER図
-![Image from Gyazo](https://i.gyazo.com/cf20fa5d8723a4553ecc779528b9cad5.png)](https://gyazo.com/cf20fa5d8723a4553ecc779528b9cad5)
+[![Image from Gyazo](https://i.gyazo.com/fb47f240db504613a54ae2de66f5535a.png)](https://gyazo.com/fb47f240db504613a54ae2de66f5535a)

@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, only: [:show, :edit, :update]
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
     @post_type = params[:post_type] if Post.post_types.key?(params[:post_type])
@@ -45,6 +45,11 @@ class PostsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @post.destroy
+    redirect_to posts_path(post_type: @post.post_type), notice: "投稿を削除しました"
   end
 
   private
