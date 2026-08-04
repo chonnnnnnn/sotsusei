@@ -42,10 +42,158 @@
   box-sizing: border-box;
 }
 
+.post-form-page .post-image-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
 .post-form-page .error-messages {
   border: 1px solid #d33;
   color: #d33;
   border-radius: 4px;
   padding: 12px;
   margin-bottom: 20px;
+}
+
+.post-show-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.post-show-page .post-info dt {
+  font-weight: bold;
+  margin-top: 16px;
+}
+
+.post-show-page .post-info dd {
+  margin: 4px 0 0;
+}
+
+.post-show-page .post-image {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.post-show-page .post-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.post-show-page .btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background: #fff;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.post-show-page .btn-danger {
+  border-color: #d33;
+  color: #d33;
+}
+
+.post-index-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.post-index-page .post-type-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.post-index-page .tab {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #333;
+  color: #333;
+  text-decoration: none;
+}
+
+.post-index-page .tab.active {
+  background: #333;
+  color: #fff;
+}
+
+.post-index-page .post-list {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+}
+
+.post-index-page .post-list-item {
+  border-bottom: 1px solid #ddd;
+}
+
+.post-index-page .post-list-item a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 4px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.post-index-page .post-list-type {
+  font-size: 0.8em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eee;
+}
+
+.post-index-page .post-list-name {
+  flex: 1;
+}
+
+.post-index-page .post-list-date {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.post-index-page .btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background: #fff;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.post-index-page .search-form {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.post-index-page .search-field label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.post-index-page .search-field select,
+.post-index-page .search-field input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.post-index-page .search-actions {
+  display: flex;
+  gap: 8px;
 }

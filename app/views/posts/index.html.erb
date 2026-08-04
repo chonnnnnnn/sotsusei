@@ -1,0 +1,93 @@
+<% content_for :title, "投稿一覧" %>
+
+<div class="post-index-page">
+  <h1>投稿一覧</h1>
+
+  <nav class="post-type-tabs">
+    <%= link_to "すべて", posts_path, class: "tab#{" active" if @post_type.blank?}" %>
+    <% Post::POST_TYPE_LABELS.each do |value, label| %>
+      <%= link_to label, posts_path(post_type: value), class: "tab#{" active" if @post_type == value.to_s}" %>
+    <% end %>
+  </nav>
+
+  <% if @post_type == "eat_out" %>
+    <%= form_with url: posts_path, method: :get, local: true, class: "search-form" do %>
+      <%= hidden_field_tag :post_type, "eat_out" %>
+
+      <div class="search-field">
+        <%= label_tag :prefecture, "都道府県" %>
+        <%= select_tag :prefecture, options_for_select(Post::PREFECTURES, params[:prefecture]), include_blank: "すべて" %>
+      </div>
+
+      <div class="search-field">
+        <%= label_tag :date, "日付" %>
+        <%= date_field_tag :date, params[:date] %>
+      </div>
+
+      <div class="search-field">
+        <%= label_tag :name, "店名" %>
+        <%= text_field_tag :name, params[:name], placeholder: "店名で検索" %>
+      </div>
+
+      <div class="search-field">
+        <%= label_tag :repeat_intention, "リピート判定" %>
+        <%= select_tag :repeat_intention,
+              options_for_select(Post::REPEAT_INTENTION_LABELS.map { |value, label| [label, value] }, params[:repeat_intention]),
+              include_blank: "すべて" %>
+      </div>
+
+      <div class="search-actions">
+        <%= submit_tag "検索", class: "btn" %>
+        <%= link_to "リセット", posts_path(post_type: "eat_out"), class: "btn" %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if @post_type == "purchase" %>
+    <%= form_with url: posts_path, method: :get, local: true, class: "search-form" do %>
+      <%= hidden_field_tag :post_type, "purchase" %>
+
+      <div class="search-field">
+        <%= label_tag :genre, "ジャンル" %>
+        <%= select_tag :genre,
+              options_for_select(Post::GENRE_LABELS.map { |value, label| [label, value] }, params[:genre]),
+              include_blank: "すべて" %>
+      </div>
+
+      <div class="search-field">
+        <%= label_tag :date, "日付" %>
+        <%= date_field_tag :date, params[:date] %>
+      </div>
+
+      <div class="search-field">
+        <%= label_tag :repeat_intention, "リピート判定" %>
+        <%= select_tag :repeat_intention,
+              options_for_select(Post::REPEAT_INTENTION_LABELS.map { |value, label| [label, value] }, params[:repeat_intention]),
+              include_blank: "すべて" %>
+      </div>
+
+      <div class="search-actions">
+        <%= submit_tag "検索", class: "btn" %>
+        <%= link_to "リセット", posts_path(post_type: "purchase"), class: "btn" %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if @posts.any? %>
+    <ul class="post-list">
+      <% @posts.each do |post| %>
+        <li class="post-list-item">
+          <%= link_to post_path(post) do %>
+            <span class="post-list-type"><%= post.post_type_label %></span>
+            <span class="post-list-name"><%= post.name %></span>
+            <span class="post-list-date"><%= post.date %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>投稿がありません</p>
+  <% end %>
+
+  <%= link_to "投稿する", new_post_path, class: "btn" %>
+</div>

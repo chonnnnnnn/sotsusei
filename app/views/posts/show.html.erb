@@ -1,0 +1,45 @@
+<% content_for :title, "投稿詳細" %>
+
+<div class="post-show-page">
+  <h1>投稿詳細</h1>
+
+  <dl class="post-info">
+    <dt>種別</dt>
+    <dd><%= @post.post_type_label %></dd>
+
+    <dt>日付</dt>
+    <dd><%= @post.date %></dd>
+
+    <dt>店名・商品名</dt>
+    <dd><%= @post.name %></dd>
+
+    <% if @post.prefecture.present? %>
+      <dt>都道府県</dt>
+      <dd><%= @post.prefecture %></dd>
+    <% end %>
+
+    <dt>ジャンル</dt>
+    <dd><%= @post.genre_label %></dd>
+
+    <dt>リピート判定</dt>
+    <dd><%= @post.repeat_intention_label %></dd>
+
+    <dt>一言メモ</dt>
+    <dd><%= @post.memo.presence || "―" %></dd>
+
+    <dt>画像</dt>
+    <dd>
+      <% if @post.image.attached? %>
+        <%= image_tag @post.image, class: "post-image" %>
+      <% else %>
+        画像はありません
+      <% end %>
+    </dd>
+  </dl>
+
+  <div class="post-actions">
+    <%= link_to "編集", edit_post_path(@post), class: "btn" %>
+    <%= button_to "削除", post_path(@post), method: :delete, class: "btn btn-danger",
+          form: { data: { turbo_confirm: "本当に削除しますか？" } } %>
+  </div>
+</div>

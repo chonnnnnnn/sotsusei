@@ -11,7 +11,7 @@ services: # コンテナの定義開始
     ports: # ポート設定
       - 5432:5432
     healthcheck: # コンテナの健康チェック設定
-      test: ["CMD-SHELL", "pg_isready -d myapp_development -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -d sotsusei_development -U postgres"]
       interval: 10s # チェック間隔
       timeout: 5s # タイムアウト時間
       retries: 5 # リトライ回数
