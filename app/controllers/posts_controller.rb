@@ -4,18 +4,25 @@ class PostsController < ApplicationController
 
   def index
     @post_type = params[:post_type] if Post.post_types.key?(params[:post_type])
-    @posts = current_user.posts.order(date: :desc)
+    @posts = current_user.posts
     @posts = @posts.where(post_type: @post_type) if @post_type
+    @repeat_intentions = []
 
     if @post_type == "eat_out"
-      @posts = @posts.where(prefecture: params[:prefecture]) if params[:prefecture].present?
-      @posts = @posts.where(date: params[:date]) if params[:date].present?
       @posts = @posts.where("name ILIKE ?", "%#{Post.sanitize_sql_like(params[:name])}%") if params[:name].present?
-      @posts = @posts.where(repeat_intention: params[:repeat_intention]) if Post.repeat_intentions.key?(params[:repeat_intention])
+      @posts = @posts.where(genre: params[:genre]) if Post.genres.key?(params[:genre])
+      @posts = @posts.where(prefecture: params[:prefecture]) if params[:prefecture].present?
+      @repeat_intentions = Array(params[:repeat_intentions]) & Post.repeat_intentions.keys
+      @posts = @posts.where(repeat_intention: @repeat_intentions) if @repeat_intentions.any?
+      @sort = params[:sort] == "date_asc" ? "date_asc" : "date_desc"
+      @posts = @posts.order(date: @sort == "date_asc" ? :asc : :desc)
     elsif @post_type == "purchase"
       @posts = @posts.where(genre: params[:genre]) if Post.genres.key?(params[:genre])
       @posts = @posts.where(date: params[:date]) if params[:date].present?
       @posts = @posts.where(repeat_intention: params[:repeat_intention]) if Post.repeat_intentions.key?(params[:repeat_intention])
+      @posts = @posts.order(date: :desc)
+    else
+      @posts = @posts.order(date: :desc)
     end
   end
 

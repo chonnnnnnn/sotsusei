@@ -4,7 +4,7 @@ class Post < ApplicationRecord
 
   POST_TYPE_LABELS = { eat_out: "外食", purchase: "購入品" }.freeze
   GENRE_LABELS = { japanese: "和食", western: "洋食", chinese: "中華", cafe: "カフェ", product: "購入品", other: "その他" }.freeze
-  REPEAT_INTENTION_LABELS = { yes: "あり", no: "なし", undecided: "要検討" }.freeze
+  REPEAT_INTENTION_LABELS = { yes: "リピ確定", undecided: "検討中", no: "次は別の" }.freeze
 
   PREFECTURES = %w[
     北海道

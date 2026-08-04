@@ -1,96 +1,194 @@
-<% content_for :title, "投稿一覧" %>
+<% if @post_type == "eat_out" %>
+  <% content_for :title, "これリピ！ - 外食リスト" %>
 
-<div class="post-index-page">
-  <div class="post-index-header">
-    <h1>投稿一覧</h1>
-    <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn" %>
-  </div>
-
-  <nav class="post-type-tabs">
-    <%= link_to "すべて", posts_path, class: "tab#{" active" if @post_type.blank?}" %>
-    <% Post::POST_TYPE_LABELS.each do |value, label| %>
-      <%= link_to label, posts_path(post_type: value), class: "tab#{" active" if @post_type == value.to_s}" %>
-    <% end %>
-  </nav>
-
-  <% if @post_type == "eat_out" %>
-    <%= form_with url: posts_path, method: :get, local: true, class: "search-form" do %>
-      <%= hidden_field_tag :post_type, "eat_out" %>
-
-      <div class="search-field">
-        <%= label_tag :prefecture, "都道府県" %>
-        <%= select_tag :prefecture, options_for_select(Post::PREFECTURES, params[:prefecture]), include_blank: "すべて" %>
+  <div class="bg-surface text-on-surface min-h-screen flex flex-col">
+    <header class="fixed top-0 w-full z-50 bg-surface shadow-sm max-w-7xl mx-auto left-1/2 -translate-x-1/2 flex justify-between items-center px-container-margin py-4 transition-all">
+      <div class="flex-1 flex items-center">
+        <h1 class="font-headline-lg text-headline-lg font-black text-primary">これリピ！</h1>
       </div>
-
-      <div class="search-field">
-        <%= label_tag :date, "日付" %>
-        <%= date_field_tag :date, params[:date] %>
+      <nav class="hidden md:flex items-center gap-stack-md">
+        <%= link_to "購入品", posts_path(post_type: "purchase"), class: "text-on-surface-variant hover:bg-surface-container-low transition-colors px-3 py-2 rounded-lg font-label-md text-label-md" %>
+        <%= link_to "外食", posts_path(post_type: "eat_out"), class: "text-primary font-bold border-b-2 border-primary px-3 py-2 font-label-md text-label-md" %>
+      </nav>
+      <div class="flex-1 flex items-center justify-end gap-stack-sm text-primary">
+        <%= link_to edit_user_registration_path, class: "p-2 hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-200" do %>
+          <span class="material-symbols-outlined">account_circle</span>
+        <% end %>
+        <%= button_to destroy_user_session_path, method: :delete,
+              class: "p-2 hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-200",
+              form: { class: "contents" } do %>
+          <span class="material-symbols-outlined">logout</span>
+        <% end %>
       </div>
+    </header>
 
-      <div class="search-field">
-        <%= label_tag :name, "店名" %>
-        <%= text_field_tag :name, params[:name], placeholder: "店名で検索" %>
-      </div>
+    <main class="pt-24 pb-stack-lg px-container-margin max-w-7xl mx-auto w-full flex-grow">
+      <%= form_with url: posts_path, method: :get, local: true,
+            class: "bg-surface-container-lowest rounded-xl shadow-sm p-stack-md md:p-stack-lg mb-section-gap border border-outline-variant mt-stack-md" do %>
+        <%= hidden_field_tag :post_type, "eat_out" %>
 
-      <div class="search-field">
-        <%= label_tag :repeat_intention, "リピート判定" %>
-        <%= select_tag :repeat_intention,
-              options_for_select(Post::REPEAT_INTENTION_LABELS.map { |value, label| [label, value] }, params[:repeat_intention]),
-              include_blank: "すべて" %>
-      </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-stack-md">
+          <div class="flex flex-col gap-unit">
+            <%= label_tag :name, "キーワード", class: "font-label-sm text-label-sm text-on-surface-variant px-1" %>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+              <%= text_field_tag :name, params[:name], placeholder: "店名・料理名で検索",
+                    class: "w-full pl-10 pr-4 py-3 bg-surface rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" %>
+            </div>
+          </div>
 
-      <div class="search-actions">
-        <%= submit_tag "検索", class: "btn" %>
-        <%= link_to "リセット", posts_path(post_type: "eat_out"), class: "btn" %>
-      </div>
-    <% end %>
-  <% end %>
+          <div class="flex flex-col gap-unit">
+            <%= label_tag :genre, "カテゴリー", class: "font-label-sm text-label-sm text-on-surface-variant px-1" %>
+            <%= select_tag :genre,
+                  options_for_select(Post::GENRE_LABELS.except(:product).map { |value, label| [label, value] }, params[:genre]),
+                  include_blank: "すべて",
+                  class: "w-full px-4 py-3 bg-surface rounded-lg border border-outline-variant focus:border-primary outline-none font-body-md text-body-md appearance-none cursor-pointer" %>
+          </div>
 
-  <% if @post_type == "purchase" %>
-    <%= form_with url: posts_path, method: :get, local: true, class: "search-form" do %>
-      <%= hidden_field_tag :post_type, "purchase" %>
+          <div class="flex flex-col gap-unit">
+            <%= label_tag :prefecture, "都道府県", class: "font-label-sm text-label-sm text-on-surface-variant px-1" %>
+            <%= select_tag :prefecture, options_for_select(Post::PREFECTURES, params[:prefecture]), include_blank: "全国",
+                  class: "w-full px-4 py-3 bg-surface rounded-lg border border-outline-variant focus:border-primary outline-none font-body-md text-body-md appearance-none cursor-pointer" %>
+          </div>
 
-      <div class="search-field">
-        <%= label_tag :genre, "ジャンル" %>
-        <%= select_tag :genre,
-              options_for_select(Post::GENRE_LABELS.map { |value, label| [label, value] }, params[:genre]),
-              include_blank: "すべて" %>
-      </div>
+          <div class="flex flex-col gap-unit">
+            <%= label_tag :sort, "並び替え", class: "font-label-sm text-label-sm text-on-surface-variant px-1" %>
+            <%= select_tag :sort,
+                  options_for_select([["日付が新しい順", "date_desc"], ["日付が古い順", "date_asc"]], @sort),
+                  class: "w-full px-4 py-3 bg-surface rounded-lg border border-outline-variant focus:border-primary outline-none font-body-md text-body-md appearance-none cursor-pointer" %>
+          </div>
+        </div>
 
-      <div class="search-field">
-        <%= label_tag :date, "日付" %>
-        <%= date_field_tag :date, params[:date] %>
-      </div>
-
-      <div class="search-field">
-        <%= label_tag :repeat_intention, "リピート判定" %>
-        <%= select_tag :repeat_intention,
-              options_for_select(Post::REPEAT_INTENTION_LABELS.map { |value, label| [label, value] }, params[:repeat_intention]),
-              include_blank: "すべて" %>
-      </div>
-
-      <div class="search-actions">
-        <%= submit_tag "検索", class: "btn" %>
-        <%= link_to "リセット", posts_path(post_type: "purchase"), class: "btn" %>
-      </div>
-    <% end %>
-  <% end %>
-
-  <% if @posts.any? %>
-    <ul class="post-list">
-      <% @posts.each do |post| %>
-        <li class="post-list-item">
-          <%= link_to post_path(post) do %>
-            <span class="post-list-type"><%= post.post_type_label %></span>
-            <span class="post-list-name"><%= post.name %></span>
-            <span class="post-list-date"><%= post.date %></span>
+        <div class="mt-stack-md flex flex-wrap items-center gap-stack-sm">
+          <span class="font-label-sm text-label-sm text-on-surface-variant mr-2">リピ判定:</span>
+          <% Post::REPEAT_INTENTION_LABELS.each do |value, label| %>
+            <label class="flex items-center gap-1 cursor-pointer group">
+              <%= check_box_tag "repeat_intentions[]", value, @repeat_intentions.include?(value.to_s),
+                    id: "repeat_intention_#{value}", class: "hidden peer" %>
+              <div class="px-4 py-1.5 rounded-full border border-outline-variant peer-checked:bg-primary-fixed peer-checked:border-primary-container peer-checked:text-on-primary-fixed-variant transition-all font-label-md text-label-md">
+                <%= label %>
+              </div>
+            </label>
           <% end %>
-        </li>
+          <%= submit_tag "検索する",
+                class: "ml-auto mt-4 md:mt-0 w-full md:w-auto px-10 py-3 bg-primary text-on-primary font-bold rounded-lg hover:opacity-90 transition-all active:scale-95 shadow-md cursor-pointer" %>
+        </div>
       <% end %>
-    </ul>
-  <% else %>
-    <p>投稿がありません</p>
-  <% end %>
 
-  <%= link_to "投稿する", new_post_path, class: "btn" %>
-</div>
+      <% if @posts.any? %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+          <% @posts.each do |post| %>
+            <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group border border-transparent hover:border-outline-variant">
+              <%= link_to post_path(post), class: "block" do %>
+                <div class="relative aspect-[4/3] overflow-hidden bg-surface-container-high">
+                  <% if post.image.attached? %>
+                    <%= image_tag post.image, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" %>
+                  <% else %>
+                    <div class="w-full h-full flex items-center justify-center text-outline">
+                      <span class="material-symbols-outlined text-5xl">restaurant</span>
+                    </div>
+                  <% end %>
+                </div>
+                <div class="p-stack-md pb-0 flex flex-col gap-unit">
+                  <div class="flex justify-between items-start">
+                    <span class="font-label-sm text-label-sm text-primary bg-primary-fixed px-2 py-0.5 rounded"><%= post.genre_label %></span>
+                    <span class="text-on-surface-variant font-label-sm text-label-sm"><%= post.date.strftime("%Y.%m.%d") %></span>
+                  </div>
+                  <h3 class="font-title-md text-title-md text-on-surface line-clamp-1"><%= post.name %></h3>
+                  <p class="text-on-surface-variant font-body-md text-body-md line-clamp-1"><%= post.prefecture.presence || "―" %></p>
+                </div>
+              <% end %>
+
+              <div class="px-stack-md pb-stack-md pt-stack-sm mt-stack-sm mx-stack-md border-t border-outline-variant flex items-center justify-between">
+                <% icon, color = repeat_intention_icon(post) %>
+                <div class="flex items-center gap-1 <%= color %>">
+                  <span class="material-symbols-outlined fill-icon text-xl"><%= icon %></span>
+                  <span class="font-label-md text-label-md"><%= post.repeat_intention_label %></span>
+                </div>
+                <%= link_to edit_post_path(post), class: "p-2 rounded-full hover:bg-surface-container-low transition-colors" do %>
+                  <span class="material-symbols-outlined text-outline">more_horiz</span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-center text-on-surface-variant py-stack-lg">該当する投稿がありません</p>
+      <% end %>
+
+      <%= link_to new_post_path,
+            class: "fixed bottom-10 right-10 w-16 h-16 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform duration-200 z-40" do %>
+        <span class="material-symbols-outlined text-3xl">add</span>
+      <% end %>
+    </main>
+
+    <footer class="w-full py-stack-lg flex flex-col items-center gap-stack-sm border-t border-outline-variant bg-surface-container-lowest">
+      <div class="font-title-md text-title-md font-bold text-on-surface-variant">これリピ！</div>
+      <p class="text-on-surface-variant font-label-sm text-label-sm mt-stack-sm">© <%= Time.current.year %> これリピ！</p>
+    </footer>
+  </div>
+<% else %>
+  <% content_for :title, "投稿一覧" %>
+
+  <div class="post-index-page">
+    <div class="post-index-header">
+      <h1>投稿一覧</h1>
+      <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn" %>
+    </div>
+
+    <nav class="post-type-tabs">
+      <%= link_to "すべて", posts_path, class: "tab#{" active" if @post_type.blank?}" %>
+      <% Post::POST_TYPE_LABELS.each do |value, label| %>
+        <%= link_to label, posts_path(post_type: value), class: "tab#{" active" if @post_type == value.to_s}" %>
+      <% end %>
+    </nav>
+
+    <% if @post_type == "purchase" %>
+      <%= form_with url: posts_path, method: :get, local: true, class: "search-form" do %>
+        <%= hidden_field_tag :post_type, "purchase" %>
+
+        <div class="search-field">
+          <%= label_tag :genre, "ジャンル" %>
+          <%= select_tag :genre,
+                options_for_select(Post::GENRE_LABELS.map { |value, label| [label, value] }, params[:genre]),
+                include_blank: "すべて" %>
+        </div>
+
+        <div class="search-field">
+          <%= label_tag :date, "日付" %>
+          <%= date_field_tag :date, params[:date] %>
+        </div>
+
+        <div class="search-field">
+          <%= label_tag :repeat_intention, "リピート判定" %>
+          <%= select_tag :repeat_intention,
+                options_for_select(Post::REPEAT_INTENTION_LABELS.map { |value, label| [label, value] }, params[:repeat_intention]),
+                include_blank: "すべて" %>
+        </div>
+
+        <div class="search-actions">
+          <%= submit_tag "検索", class: "btn" %>
+          <%= link_to "リセット", posts_path(post_type: "purchase"), class: "btn" %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% if @posts.any? %>
+      <ul class="post-list">
+        <% @posts.each do |post| %>
+          <li class="post-list-item">
+            <%= link_to post_path(post) do %>
+              <span class="post-list-type"><%= post.post_type_label %></span>
+              <span class="post-list-name"><%= post.name %></span>
+              <span class="post-list-date"><%= post.date %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>投稿がありません</p>
+    <% end %>
+
+    <%= link_to "投稿する", new_post_path, class: "btn" %>
+  </div>
+<% end %>
