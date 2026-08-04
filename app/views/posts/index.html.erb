@@ -1,7 +1,10 @@
 <% content_for :title, "投稿一覧" %>
 
 <div class="post-index-page">
-  <h1>投稿一覧</h1>
+  <div class="post-index-header">
+    <h1>投稿一覧</h1>
+    <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn" %>
+  </div>
 
   <nav class="post-type-tabs">
     <%= link_to "すべて", posts_path, class: "tab#{" active" if @post_type.blank?}" %>

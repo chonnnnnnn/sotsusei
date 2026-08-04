@@ -106,6 +106,18 @@
   padding: 24px 16px;
 }
 
+.post-index-page .post-index-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.post-index-page .post-index-header h1 {
+  margin: 0;
+}
+
 .post-index-page .post-type-tabs {
   display: flex;
   gap: 8px;
