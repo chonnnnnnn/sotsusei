@@ -1,0 +1,17 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+        username: "ユーザー名"
+      post:
+        post_type: "種別"
+        date: "日付"
+        name: "店名・商品名"
+        prefecture: "都道府県"
+        genre: "ジャンル"
+        repeat_intention: "リピート判定"
+        memo: "一言メモ"
+        image: "画像"

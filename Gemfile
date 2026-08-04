@@ -58,3 +58,10 @@ end
 
 
 gem "devise"
+
+# Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
+gem "tailwindcss-rails"
+
+# Japanese translations for Rails/ActiveRecord/ActiveModel and Devise
+gem "rails-i18n"
+gem "devise-i18n"
