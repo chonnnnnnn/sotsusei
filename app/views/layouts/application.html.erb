@@ -13,11 +13,20 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <% if notice %>
+      <div class="fixed top-4 inset-x-4 z-[100] mx-auto max-w-md rounded-xl bg-tertiary px-5 py-3 text-on-tertiary shadow-lg text-center" data-turbo-temporary><%= notice %></div>
+    <% end %>
+    <% if alert %>
+      <div class="fixed top-4 inset-x-4 z-[100] mx-auto max-w-md rounded-xl bg-error px-5 py-3 text-on-error shadow-lg text-center" data-turbo-temporary><%= alert %></div>
+    <% end %>
     <%= yield %>
   </body>
 </html>

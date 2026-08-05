@@ -55,3 +55,16 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+
+gem "devise"
+
+# Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
+gem "tailwindcss-rails"
+
+# Japanese translations for Rails/ActiveRecord/ActiveModel and Devise
+gem "rails-i18n"
+gem "devise-i18n"
+
+gem "cloudinary", "~> 2.0"
+gem "image_processing", "~> 1.2" # リサイズ等を行う場合

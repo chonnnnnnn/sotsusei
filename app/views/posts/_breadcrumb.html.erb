@@ -1,0 +1,17 @@
+<%# locals: crumbs - array of [label, url_or_nil] pairs. url nil means the current (non-link) page. %>
+<nav aria-label="breadcrumb" class="mb-stack-md">
+  <ol class="flex items-center flex-wrap gap-1 font-label-sm text-label-sm text-on-surface-variant">
+    <% crumbs.each_with_index do |(label, url), index| %>
+      <li class="flex items-center gap-1 min-w-0">
+        <% if index > 0 %>
+          <span class="material-symbols-outlined text-[16px] text-outline">chevron_right</span>
+        <% end %>
+        <% if url %>
+          <%= link_to label, url, class: "hover:text-primary transition-colors" %>
+        <% else %>
+          <span class="text-on-surface font-bold truncate max-w-[200px]" aria-current="page"><%= label %></span>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+</nav>
