@@ -1,3 +1,23 @@
+.breadcrumb {
+  font-size: 0.85em;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.breadcrumb a {
+  color: #666;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb .current {
+  color: #333;
+  font-weight: bold;
+}
+
 .post-form-page {
   max-width: 480px;
   margin: 0 auto;

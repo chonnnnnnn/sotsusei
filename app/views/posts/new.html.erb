@@ -1,7 +1,219 @@
-<% content_for :title, "投稿する" %>
+<% if @post.post_type == "eat_out" %>
+  <% content_for :title, "これリピ！ - 投稿作成" %>
 
-<div class="post-form-page">
-  <h1>投稿する</h1>
+  <div class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-container-margin py-4 max-w-7xl mx-auto shadow-sm bg-surface">
+      <h1 class="font-headline-lg text-headline-lg font-black text-primary">これリピ！</h1>
+      <div class="flex items-center gap-stack-md">
+        <%= link_to edit_user_registration_path, class: "material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-low transition-colors rounded-full", title: "Account" do %>account_circle<% end %>
+        <%= button_to destroy_user_session_path, method: :delete,
+              class: "material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-low transition-colors rounded-full",
+              form: { class: "contents" }, title: "Logout" do %>logout<% end %>
+      </div>
+    </header>
 
-  <%= render "form", post: @post, submit_label: "投稿する" %>
-</div>
+    <main class="flex-grow pt-24 pb-stack-lg px-container-margin max-w-md mx-auto w-full">
+      <div class="mb-stack-lg">
+        <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">投稿作成 (外食用)</h2>
+        <p class="text-on-surface-variant text-body-md">今日の美味しい思い出を記録しましょう。</p>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(255,82,0,0.05)] p-stack-lg border border-outline-variant/30">
+        <%= form_with model: @post, multipart: true, class: "flex flex-col gap-stack-lg" do |f| %>
+          <%= f.hidden_field :post_type, value: "eat_out" %>
+
+          <% if @post.errors.any? %>
+            <div class="rounded-lg border border-error bg-error-container px-4 py-3 text-on-error-container">
+              <p class="font-label-md text-label-md mb-1">入力内容をご確認ください</p>
+              <ul class="text-body-md list-disc list-inside">
+                <% @post.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <label class="relative w-full aspect-video bg-surface-container rounded-lg overflow-hidden flex flex-col items-center justify-center border-2 border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+            <% if @post.persisted? && @post.image.attached? %>
+              <%= image_tag @post.image, class: "absolute inset-0 w-full h-full object-cover" %>
+            <% else %>
+              <span class="material-symbols-outlined text-primary text-4xl mb-2">add_a_photo</span>
+              <span class="font-label-md text-on-surface-variant">写真をアップロード</span>
+            <% end %>
+            <%= f.file_field :image, accept: "image/*", class: "hidden" %>
+          </label>
+
+          <div class="flex flex-col gap-stack-sm">
+            <%= f.label :name, "店名", class: "font-label-md text-label-md text-on-surface-variant" %>
+            <%= f.text_field :name, placeholder: "店名を入力してください",
+                  class: "h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-body-md" %>
+          </div>
+
+          <div class="flex flex-col gap-stack-sm">
+            <%= f.label :prefecture, "都道府県", class: "font-label-md text-label-md text-on-surface-variant" %>
+            <%= f.select :prefecture, Post::PREFECTURES, { include_blank: "都道府県を選択" },
+                  class: "h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-body-md appearance-none" %>
+          </div>
+
+          <div class="flex flex-col gap-stack-sm">
+            <%= f.label :date, "日付", class: "font-label-md text-label-md text-on-surface-variant" %>
+            <%= f.date_field :date,
+                  class: "h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-body-md" %>
+          </div>
+
+          <div class="flex flex-col gap-stack-sm">
+            <span class="font-label-md text-label-md text-on-surface-variant">ジャンル</span>
+            <div class="flex flex-wrap gap-2">
+              <% Post::GENRE_LABELS.except(:product).each do |value, label| %>
+                <label class="cursor-pointer">
+                  <%= f.radio_button :genre, value, class: "hidden peer" %>
+                  <span class="px-5 py-2 rounded-full border border-outline-variant text-label-md peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container transition-all inline-block"><%= label %></span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-stack-sm">
+            <span class="font-label-md text-label-md text-on-surface-variant">リピート判定</span>
+            <div class="grid grid-cols-3 gap-gutter">
+              <% Post::REPEAT_INTENTION_LABELS.each do |value, label| %>
+                <% icon, color = repeat_intention_selector_icon(value) %>
+                <label class="cursor-pointer">
+                  <%= f.radio_button :repeat_intention, value, class: "hidden peer" %>
+                  <span class="flex flex-col items-center gap-2 py-4 border border-outline-variant rounded-lg peer-checked:border-primary-container peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:shadow-[0_4px_12px_rgba(168,51,0,0.2)] hover:bg-surface-container-low peer-checked:hover:bg-primary-container transition-all">
+                    <span class="material-symbols-outlined <%= color %>"><%= icon %></span>
+                    <span class="font-label-md"><%= label %></span>
+                  </span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-stack-sm">
+            <%= f.label :memo, "メモ", class: "font-label-md text-label-md text-on-surface-variant" %>
+            <%= f.text_area :memo, placeholder: "メモを入力してください", rows: 4,
+                  class: "p-4 rounded-lg border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-body-md resize-none" %>
+          </div>
+
+          <%= f.submit "投稿する",
+                class: "mt-stack-md bg-primary text-on-primary font-title-md text-title-md py-4 rounded-lg shadow-lg active:scale-[0.98] transition-all hover:bg-primary-container cursor-pointer" %>
+        <% end %>
+      </div>
+    </main>
+
+    <footer class="w-full py-stack-lg flex flex-col items-center gap-stack-sm border-t border-outline-variant bg-surface-container-lowest mt-stack-lg">
+      <div class="font-title-md text-title-md font-bold text-on-surface-variant mb-2">これリピ！</div>
+      <div class="text-on-surface-variant font-label-sm text-label-sm opacity-70">© <%= Time.current.year %> これリピ！</div>
+    </footer>
+  </div>
+<% elsif @post.post_type == "purchase" %>
+  <% content_for :title, "これリピ！ - 投稿作成" %>
+
+  <div class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-container-margin py-4 max-w-7xl mx-auto shadow-sm bg-surface">
+      <h1 class="font-headline-lg text-headline-lg font-black text-primary">これリピ！</h1>
+      <div class="flex items-center gap-stack-md">
+        <%= link_to edit_user_registration_path, class: "material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-low transition-colors rounded-full", title: "Account" do %>account_circle<% end %>
+        <%= button_to destroy_user_session_path, method: :delete,
+              class: "material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-low transition-colors rounded-full",
+              form: { class: "contents" }, title: "Logout" do %>logout<% end %>
+      </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-stack-lg px-container-margin max-w-md mx-auto w-full">
+      <div class="mb-stack-lg">
+        <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">投稿作成 (購入品用)</h2>
+        <p class="text-on-surface-variant text-body-md">気に入った商品を記録しましょう。</p>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(255,82,0,0.05)] p-stack-lg border border-outline-variant/30">
+        <%= form_with model: @post, multipart: true, class: "flex flex-col gap-stack-lg" do |f| %>
+          <%= f.hidden_field :post_type, value: "purchase" %>
+
+          <% if @post.errors.any? %>
+            <div class="rounded-lg border border-error bg-error-container px-4 py-3 text-on-error-container">
+              <p class="font-label-md text-label-md mb-1">入力内容をご確認ください</p>
+              <ul class="text-body-md list-disc list-inside">
+                <% @post.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <label class="relative w-full aspect-video bg-surface-container rounded-lg overflow-hidden flex flex-col items-center justify-center border-2 border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+            <% if @post.persisted? && @post.image.attached? %>
+              <%= image_tag @post.image, class: "absolute inset-0 w-full h-full object-cover" %>
+            <% else %>
+              <span class="material-symbols-outlined text-primary text-4xl mb-2">add_a_photo</span>
+              <span class="font-label-md text-on-surface-variant">写真をアップロード</span>
+            <% end %>
+            <%= f.file_field :image, accept: "image/*", class: "hidden" %>
+          </label>
+
+          <div class="flex flex-col gap-stack-sm">
+            <%= f.label :name, "商品名", class: "font-label-md text-label-md text-on-surface-variant" %>
+            <%= f.text_field :name, placeholder: "商品名を入力してください",
+                  class: "h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-body-md" %>
+          </div>
+
+          <div class="flex flex-col gap-stack-sm">
+            <%= f.label :date, "日付", class: "font-label-md text-label-md text-on-surface-variant" %>
+            <%= f.date_field :date,
+                  class: "h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-body-md" %>
+          </div>
+
+          <div class="flex flex-col gap-stack-sm">
+            <span class="font-label-md text-label-md text-on-surface-variant">ジャンル</span>
+            <div class="flex flex-wrap gap-2">
+              <% Post::GENRE_LABELS.except(:product).each do |value, label| %>
+                <label class="cursor-pointer">
+                  <%= f.radio_button :genre, value, class: "hidden peer" %>
+                  <span class="px-5 py-2 rounded-full border border-outline-variant text-label-md peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container transition-all inline-block"><%= label %></span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-stack-sm">
+            <span class="font-label-md text-label-md text-on-surface-variant">リピート判定</span>
+            <div class="grid grid-cols-3 gap-gutter">
+              <% Post::REPEAT_INTENTION_LABELS.each do |value, label| %>
+                <% icon, color = repeat_intention_selector_icon(value) %>
+                <label class="cursor-pointer">
+                  <%= f.radio_button :repeat_intention, value, class: "hidden peer" %>
+                  <span class="flex flex-col items-center gap-2 py-4 border border-outline-variant rounded-lg peer-checked:border-primary-container peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:shadow-[0_4px_12px_rgba(168,51,0,0.2)] hover:bg-surface-container-low peer-checked:hover:bg-primary-container transition-all">
+                    <span class="material-symbols-outlined <%= color %>"><%= icon %></span>
+                    <span class="font-label-md"><%= label %></span>
+                  </span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-stack-sm">
+            <%= f.label :memo, "メモ", class: "font-label-md text-label-md text-on-surface-variant" %>
+            <%= f.text_area :memo, placeholder: "メモを入力してください", rows: 4,
+                  class: "p-4 rounded-lg border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-body-md resize-none" %>
+          </div>
+
+          <%= f.submit "投稿する",
+                class: "mt-stack-md bg-primary text-on-primary font-title-md text-title-md py-4 rounded-lg shadow-lg active:scale-[0.98] transition-all hover:bg-primary-container cursor-pointer" %>
+        <% end %>
+      </div>
+    </main>
+
+    <footer class="w-full py-stack-lg flex flex-col items-center gap-stack-sm border-t border-outline-variant bg-surface-container-lowest mt-stack-lg">
+      <div class="font-title-md text-title-md font-bold text-on-surface-variant mb-2">これリピ！</div>
+      <div class="text-on-surface-variant font-label-sm text-label-sm opacity-70">© <%= Time.current.year %> これリピ！</div>
+    </footer>
+  </div>
+<% else %>
+  <% content_for :title, "投稿する" %>
+
+  <div class="post-form-page">
+    <h1>投稿する</h1>
+
+    <%= render "form", post: @post, submit_label: "投稿する" %>
+  </div>
+<% end %>

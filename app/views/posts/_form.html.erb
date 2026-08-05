@@ -69,4 +69,12 @@
   </div>
 
   <%= f.submit submit_label %>
+
+  <%= form_with(model: post) do |form| %>
+    <div>
+      <%= form.label :image, "画像" %>
+      <%= form.file_field :image %>
+    </div>
+    <%= form.submit %>
+  <% end %>
 <% end %>

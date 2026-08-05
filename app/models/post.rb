@@ -41,4 +41,8 @@ class Post < ApplicationRecord
   def repeat_intention_label
     REPEAT_INTENTION_LABELS[repeat_intention&.to_sym]
   end
+
+  class Post < ApplicationRecord
+    has_one_attached :image # 画像を1枚持たせる場合
+  end
 end

@@ -8,19 +8,14 @@ class PostsController < ApplicationController
     @posts = @posts.where(post_type: @post_type) if @post_type
     @repeat_intentions = []
 
-    if @post_type == "eat_out"
-      @posts = @posts.where("name ILIKE ?", "%#{Post.sanitize_sql_like(params[:name])}%") if params[:name].present?
-      @posts = @posts.where(genre: params[:genre]) if Post.genres.key?(params[:genre])
+    case @post_type
+    when "eat_out"
+      apply_common_search_filters
       @posts = @posts.where(prefecture: params[:prefecture]) if params[:prefecture].present?
-      @repeat_intentions = Array(params[:repeat_intentions]) & Post.repeat_intentions.keys
-      @posts = @posts.where(repeat_intention: @repeat_intentions) if @repeat_intentions.any?
-      @sort = params[:sort] == "date_asc" ? "date_asc" : "date_desc"
-      @posts = @posts.order(date: @sort == "date_asc" ? :asc : :desc)
-    elsif @post_type == "purchase"
-      @posts = @posts.where(genre: params[:genre]) if Post.genres.key?(params[:genre])
-      @posts = @posts.where(date: params[:date]) if params[:date].present?
-      @posts = @posts.where(repeat_intention: params[:repeat_intention]) if Post.repeat_intentions.key?(params[:repeat_intention])
-      @posts = @posts.order(date: :desc)
+      apply_sort
+    when "purchase"
+      apply_common_search_filters
+      apply_sort
     else
       @posts = @posts.order(date: :desc)
     end
@@ -28,13 +23,15 @@ class PostsController < ApplicationController
 
   def new
     @post = current_user.posts.build
+    @post.post_type = params[:post_type] if Post.post_types.key?(params[:post_type])
+    @post.date = Date.current
   end
 
   def create
     @post = current_user.posts.build(post_params)
 
     if @post.save
-      redirect_to new_post_path, notice: "投稿を作成しました"
+      redirect_to new_post_path(post_type: @post.post_type), notice: "投稿を作成しました"
     else
       render :new, status: :unprocessable_entity
     end
@@ -65,9 +62,25 @@ class PostsController < ApplicationController
     @post = current_user.posts.find(params[:id])
   end
 
+  def apply_common_search_filters
+    @posts = @posts.where("name ILIKE ?", "%#{Post.sanitize_sql_like(params[:name])}%") if params[:name].present?
+    @posts = @posts.where(genre: params[:genre]) if Post.genres.key?(params[:genre])
+    @repeat_intentions = Array(params[:repeat_intentions]) & Post.repeat_intentions.keys
+    @posts = @posts.where(repeat_intention: @repeat_intentions) if @repeat_intentions.any?
+  end
+
+  def apply_sort
+    @sort = params[:sort] == "date_asc" ? "date_asc" : "date_desc"
+    @posts = @posts.order(date: @sort == "date_asc" ? :asc : :desc)
+  end
+
   def post_params
     attrs = params.require(:post).permit(:post_type, :date, :name, :prefecture, :genre, :repeat_intention, :memo, :image)
     attrs.delete(:image) if attrs[:image].blank?
     attrs
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :content, :image)
   end
 end
