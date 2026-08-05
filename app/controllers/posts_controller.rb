@@ -12,10 +12,10 @@ class PostsController < ApplicationController
     when "eat_out"
       apply_common_search_filters
       @posts = @posts.where(prefecture: params[:prefecture]) if params[:prefecture].present?
-      apply_sort
+      apply_date_range
     when "purchase"
       apply_common_search_filters
-      apply_sort
+      apply_date_range
     else
       @posts = @posts.order(date: :desc)
     end
@@ -69,18 +69,23 @@ class PostsController < ApplicationController
     @posts = @posts.where(repeat_intention: @repeat_intentions) if @repeat_intentions.any?
   end
 
-  def apply_sort
-    @sort = params[:sort] == "date_asc" ? "date_asc" : "date_desc"
-    @posts = @posts.order(date: @sort == "date_asc" ? :asc : :desc)
+  def apply_date_range
+    @date_from = parse_date(params[:date_from])
+    @date_to = parse_date(params[:date_to])
+    @posts = @posts.where(date: @date_from..) if @date_from
+    @posts = @posts.where(date: ..@date_to) if @date_to
+    @posts = @posts.order(date: :desc)
+  end
+
+  def parse_date(value)
+    Date.parse(value) if value.present?
+  rescue ArgumentError
+    nil
   end
 
   def post_params
     attrs = params.require(:post).permit(:post_type, :date, :name, :prefecture, :genre, :repeat_intention, :memo, :image)
     attrs.delete(:image) if attrs[:image].blank?
     attrs
-  end
-
-  def post_params
-    params.require(:post).permit(:title, :content, :image)
   end
 end

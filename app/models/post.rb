@@ -26,7 +26,7 @@ class Post < ApplicationRecord
   validates :post_type, presence: true
   validates :name, presence: true
   validates :date, presence: true
-  validates :genre, presence: true
+  validates :genre, presence: true, if: :eat_out?
   validates :repeat_intention, presence: true
   validates :prefecture, presence: true, inclusion: { in: PREFECTURES }, if: :eat_out?
 
@@ -40,9 +40,5 @@ class Post < ApplicationRecord
 
   def repeat_intention_label
     REPEAT_INTENTION_LABELS[repeat_intention&.to_sym]
-  end
-
-  class Post < ApplicationRecord
-    has_one_attached :image # 画像を1枚持たせる場合
   end
 end

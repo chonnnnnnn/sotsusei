@@ -2,14 +2,16 @@
   <% content_for :title, "投稿詳細 - これリピ！" %>
 
   <div class="font-body-md text-on-surface min-h-screen flex flex-col bg-background">
-    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-container-margin py-4 max-w-7xl mx-auto bg-surface shadow-sm">
-      <div class="font-headline-lg text-headline-lg font-black text-primary">これリピ！</div>
+    <header class="fixed top-0 w-full z-50 bg-primary shadow-sm">
+      <div class="max-w-7xl mx-auto flex justify-between items-center px-container-margin py-4">
+      <div class="font-headline-lg text-headline-lg font-black text-on-primary">これリピ！</div>
       <div class="flex items-center gap-stack-md">
-        <%= link_to edit_user_registration_path, class: "material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full", title: "Account" do %>account_circle<% end %>
+        <%= link_to edit_user_registration_path, class: "material-symbols-outlined p-2 text-on-primary/80 hover:bg-white/10 transition-colors rounded-full", title: "Account" do %>account_circle<% end %>
         <%= button_to destroy_user_session_path, method: :delete,
-              class: "material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full",
+              class: "material-symbols-outlined p-2 text-on-primary/80 hover:bg-white/10 transition-colors rounded-full",
               form: { class: "contents" }, title: "Logout" do %>logout<% end %>
       </div>
+    </div>
     </header>
 
     <main class="flex-grow pt-24 pb-stack-lg px-container-margin mx-auto max-w-md w-full">
@@ -52,7 +54,7 @@
             </div>
 
             <div class="flex items-center gap-stack-sm">
-              <%= link_to "編集する", edit_post_path(@post),
+              <%= link_to "編集", edit_post_path(@post),
                     class: "bg-primary text-on-primary px-8 py-3 rounded-lg font-title-md hover:opacity-90 active:scale-95 transition-all shadow-md" %>
               <%= button_to post_path(@post), method: :delete,
                     class: "material-symbols-outlined p-3 text-on-surface-variant hover:bg-surface-container-high hover:text-error transition-colors rounded-lg",
@@ -75,9 +77,86 @@
       </div>
     </main>
 
-    <footer class="w-full py-stack-lg flex flex-col items-center gap-stack-sm border-t border-outline-variant bg-surface-container-lowest">
-      <div class="font-title-md text-title-md font-bold text-on-surface-variant">これリピ！ (Kore-Repi!)</div>
-      <p class="font-label-sm text-label-sm text-on-surface-variant">© <%= Time.current.year %> これリピ！ (Kore-Repi!)</p>
+    <footer class="w-full py-stack-lg flex flex-col items-center gap-stack-sm border-t border-primary-fixed-dim bg-primary-fixed">
+      <div class="font-title-md text-title-md font-bold text-on-primary-fixed-variant">これリピ！ (Kore-Repi!)</div>
+      <p class="font-label-sm text-label-sm text-on-primary-fixed-variant">© <%= Time.current.year %> これリピ！ (Kore-Repi!)</p>
+    </footer>
+  </div>
+<% elsif @post.post_type == "purchase" %>
+  <% content_for :title, "投稿詳細 - これリピ！" %>
+
+  <div class="font-body-md text-on-surface min-h-screen flex flex-col bg-background">
+    <header class="fixed top-0 w-full z-50 bg-primary shadow-sm">
+      <div class="max-w-7xl mx-auto flex justify-between items-center px-container-margin py-4">
+      <div class="font-headline-lg text-headline-lg font-black text-on-primary">これリピ！</div>
+      <div class="flex items-center gap-stack-md">
+        <%= link_to edit_user_registration_path, class: "material-symbols-outlined p-2 text-on-primary/80 hover:bg-white/10 transition-colors rounded-full", title: "Account" do %>account_circle<% end %>
+        <%= button_to destroy_user_session_path, method: :delete,
+              class: "material-symbols-outlined p-2 text-on-primary/80 hover:bg-white/10 transition-colors rounded-full",
+              form: { class: "contents" }, title: "Logout" do %>logout<% end %>
+      </div>
+    </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-stack-lg px-container-margin mx-auto max-w-md w-full">
+      <%= render "breadcrumb", crumbs: [["ホーム", root_path], ["購入品", posts_path(post_type: "purchase")], [@post.name, nil]] %>
+
+      <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(168,51,0,0.05)] border border-outline-variant/30">
+        <div class="relative h-64 md:h-96 w-full bg-surface-container">
+          <% if @post.image.attached? %>
+            <%= image_tag @post.image, class: "w-full h-full object-cover" %>
+          <% else %>
+            <div class="w-full h-full flex items-center justify-center text-outline">
+              <span class="material-symbols-outlined text-6xl">shopping_bag</span>
+            </div>
+          <% end %>
+          <div class="absolute top-4 right-4">
+            <span class="<%= repeat_intention_badge_class(@post) %> px-4 py-2 rounded-full font-label-md flex items-center gap-1 shadow-sm">
+              <span class="material-symbols-outlined text-[18px] fill-icon"><%= repeat_intention_selector_icon(@post.repeat_intention).first %></span>
+              <%= @post.repeat_intention_label %>
+            </span>
+          </div>
+        </div>
+
+        <div class="p-gutter md:p-stack-lg">
+          <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-stack-lg">
+            <div>
+              <div class="flex items-center gap-2 mb-2 flex-wrap">
+                <span class="text-on-surface-variant font-label-sm flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                  <%= @post.date.strftime("%Y-%m-%d") %>
+                </span>
+              </div>
+              <h1 class="font-headline-lg text-headline-lg text-on-surface"><%= @post.name %></h1>
+            </div>
+
+            <div class="flex items-center gap-stack-sm">
+              <%= link_to "編集", edit_post_path(@post),
+                    class: "bg-primary text-on-primary px-8 py-3 rounded-lg font-title-md hover:opacity-90 active:scale-95 transition-all shadow-md" %>
+              <%= button_to post_path(@post), method: :delete,
+                    class: "material-symbols-outlined p-3 text-on-surface-variant hover:bg-surface-container-high hover:text-error transition-colors rounded-lg",
+                    form: { class: "contents", data: { turbo_confirm: "本当に削除しますか？" } } do %>delete<% end %>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-stack-md">
+            <div class="bg-surface-container rounded-lg p-stack-md">
+              <span class="text-on-surface-variant font-label-sm uppercase tracking-wider">一言メモ</span>
+              <p class="text-on-surface mt-1 font-body-md whitespace-pre-wrap"><%= @post.memo.presence || "メモはありません" %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-stack-lg flex justify-center">
+        <%= link_to "戻る", posts_path(post_type: "purchase"),
+              class: "text-on-surface-variant font-label-md flex items-center gap-2 py-4 px-12 hover:bg-surface-container-high transition-colors rounded-lg" %>
+      </div>
+    </main>
+
+    <footer class="w-full py-stack-lg flex flex-col items-center gap-stack-sm border-t border-primary-fixed-dim bg-primary-fixed">
+      <div class="font-title-md text-title-md font-bold text-on-primary-fixed-variant">これリピ！ (Kore-Repi!)</div>
+      <p class="font-label-sm text-label-sm text-on-primary-fixed-variant">© <%= Time.current.year %> これリピ！ (Kore-Repi!)</p>
     </footer>
   </div>
 <% else %>

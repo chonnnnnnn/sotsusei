@@ -2,14 +2,16 @@
   <% content_for :title, "投稿編集 | これリピ！" %>
 
   <div class="bg-surface font-body-md text-on-surface min-h-screen flex flex-col">
-    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-container-margin py-4 bg-surface shadow-sm max-w-7xl mx-auto left-0 right-0">
-      <div class="font-headline-lg text-headline-lg font-black text-primary">これリピ！</div>
+    <header class="fixed top-0 w-full z-50 bg-primary shadow-sm">
+      <div class="max-w-7xl mx-auto flex justify-between items-center px-container-margin py-4">
+      <div class="font-headline-lg text-headline-lg font-black text-on-primary">これリピ！</div>
       <div class="flex items-center gap-stack-md">
-        <%= link_to edit_user_registration_path, class: "material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-200", title: "Account" do %>account_circle<% end %>
+        <%= link_to edit_user_registration_path, class: "material-symbols-outlined text-on-primary/80 hover:bg-white/10 transition-colors p-2 rounded-full active:scale-95 duration-200", title: "Account" do %>account_circle<% end %>
         <%= button_to destroy_user_session_path, method: :delete,
-              class: "material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-200",
+              class: "material-symbols-outlined text-on-primary/80 hover:bg-white/10 transition-colors p-2 rounded-full active:scale-95 duration-200",
               form: { class: "contents" }, title: "Logout" do %>logout<% end %>
       </div>
+    </div>
     </header>
 
     <main class="flex-grow pt-24 pb-stack-lg px-container-margin mx-auto max-w-md w-full">
@@ -114,27 +116,29 @@
       </div>
     </main>
 
-    <footer class="w-full py-stack-lg flex flex-col items-center gap-stack-sm border-t border-outline-variant bg-surface-container-lowest mt-12">
-      <div class="font-title-md text-title-md font-bold text-on-surface-variant">これリピ！ (Kore-Repi!)</div>
-      <p class="font-label-sm text-label-sm text-on-surface-variant opacity-60">© <%= Time.current.year %> これリピ！ (Kore-Repi!)</p>
+    <footer class="w-full py-stack-lg flex flex-col items-center gap-stack-sm border-t border-primary-fixed-dim bg-primary-fixed mt-12">
+      <div class="font-title-md text-title-md font-bold text-on-primary-fixed-variant">これリピ！ (Kore-Repi!)</div>
+      <p class="font-label-sm text-label-sm text-on-primary-fixed-variant opacity-60">© <%= Time.current.year %> これリピ！ (Kore-Repi!)</p>
     </footer>
   </div>
 <% elsif @post.post_type == "purchase" %>
   <% content_for :title, "投稿編集 - これリピ！" %>
 
   <div class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col">
-    <header class="fixed top-0 w-full z-50 bg-surface shadow-sm px-container-margin py-4 flex justify-between items-center max-w-7xl mx-auto left-0 right-0">
-      <div class="font-headline-lg text-headline-lg font-black text-primary">これリピ！</div>
+    <header class="fixed top-0 w-full z-50 bg-primary shadow-sm">
+      <div class="max-w-7xl mx-auto flex justify-between items-center px-container-margin py-4">
+      <div class="font-headline-lg text-headline-lg font-black text-on-primary">これリピ！</div>
       <div class="flex items-center gap-4 text-on-surface-variant">
-        <%= link_to edit_user_registration_path, class: "hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-200" do %>
+        <%= link_to edit_user_registration_path, class: "hover:bg-white/10 transition-colors p-2 rounded-full active:scale-95 duration-200" do %>
           <span class="material-symbols-outlined">account_circle</span>
         <% end %>
         <%= button_to destroy_user_session_path, method: :delete,
-              class: "hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-200",
+              class: "hover:bg-white/10 transition-colors p-2 rounded-full active:scale-95 duration-200",
               form: { class: "contents" } do %>
           <span class="material-symbols-outlined">logout</span>
         <% end %>
       </div>
+    </div>
     </header>
 
     <main class="flex-grow pt-24 pb-stack-lg px-container-margin">
@@ -194,18 +198,6 @@
                     class: "w-full h-12 px-4 rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md text-on-surface bg-white" %>
             </div>
 
-            <div class="space-y-unit">
-              <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">ジャンル</span>
-              <div class="flex flex-wrap gap-2">
-                <% Post::GENRE_LABELS.except(:product).each do |value, label| %>
-                  <label class="cursor-pointer">
-                    <%= f.radio_button :genre, value, class: "hidden peer" %>
-                    <span class="px-5 py-2 rounded-full border border-outline-variant text-label-md peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container transition-all inline-block"><%= label %></span>
-                  </label>
-                <% end %>
-              </div>
-            </div>
-
             <div class="space-y-unit pt-2">
               <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1 mb-2">
                 <span class="material-symbols-outlined text-[16px]">repeat</span>リピート判定
@@ -244,9 +236,9 @@
       </div>
     </main>
 
-    <footer class="w-full py-stack-lg flex flex-col items-center gap-stack-sm border-t border-outline-variant bg-surface-container-lowest">
-      <div class="font-title-md text-title-md font-bold text-on-surface-variant">これリピ！</div>
-      <p class="font-label-sm text-label-sm text-on-surface-variant mt-2">© <%= Time.current.year %> これリピ！ (Kore-Repi!)</p>
+    <footer class="w-full py-stack-lg flex flex-col items-center gap-stack-sm border-t border-primary-fixed-dim bg-primary-fixed">
+      <div class="font-title-md text-title-md font-bold text-on-primary-fixed-variant">これリピ！</div>
+      <p class="font-label-sm text-label-sm text-on-primary-fixed-variant mt-2">© <%= Time.current.year %> これリピ！ (Kore-Repi!)</p>
     </footer>
   </div>
 <% else %>
