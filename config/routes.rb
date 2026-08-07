@@ -13,5 +13,9 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   # Defines the root path route ("/")
+<<<<<<< Updated upstream
   root to: redirect("/posts?post_type=eat_out")
+=======
+  #root "posts#index"
+>>>>>>> Stashed changes
 end

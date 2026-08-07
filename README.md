@@ -166,6 +166,11 @@
    - **懸念：** エラーや仕様理解で自力解決に時間がかかりすぎ、手が止まってしまうこと。
    - **対策：** 悩む時間に上限を設け、コミュニティや技術面談を積極的に活用して早期解決を図る。
 
+<<<<<<< Updated upstream
+=======
+   ### 画面遷移図
+Figma：<https://www.figma.com/design/CQcPLoA78uJcrTdJ51Ea4Q/%E5%8D%92%E5%88%B6?node-id=17-1947&t=xV809lAK1rINKatM-1>
+>>>>>>> Stashed changes
 
  ### ER図
 [![Image from Gyazo](https://i.gyazo.com/fb47f240db504613a54ae2de66f5535a.png)](https://gyazo.com/fb47f240db504613a54ae2de66f5535a)
