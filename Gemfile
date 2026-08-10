@@ -67,4 +67,4 @@ gem "rails-i18n"
 gem "devise-i18n"
 
 gem "cloudinary", "~> 2.0"
-gem "image_processing", "~> 1.2" # リサイズ等を行う場合
+gem "image_processing", "~> 2.0" # リサイズ等を行う場合
