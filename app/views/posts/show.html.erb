@@ -42,7 +42,7 @@
                 <span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-3 py-1 rounded-lg font-label-sm"><%= @post.genre_label %></span>
                 <span class="text-on-surface-variant font-label-sm flex items-center gap-1 ml-2">
                   <span class="material-symbols-outlined text-[16px]">calendar_today</span>
-                  <%= @post.date.strftime("%Y-%m-%d") %>
+                  <%= l @post.date, format: :dot %>
                 </span>
               </div>
               <h1 class="font-headline-lg text-headline-lg text-on-surface"><%= @post.name %></h1>
@@ -124,7 +124,7 @@
               <div class="flex items-center gap-2 mb-2 flex-wrap">
                 <span class="text-on-surface-variant font-label-sm flex items-center gap-1">
                   <span class="material-symbols-outlined text-[16px]">calendar_today</span>
-                  <%= @post.date.strftime("%Y-%m-%d") %>
+                  <%= l @post.date, format: :dot %>
                 </span>
               </div>
               <h1 class="font-headline-lg text-headline-lg text-on-surface"><%= @post.name %></h1>
@@ -176,7 +176,7 @@
       <dd><%= @post.post_type_label %></dd>
 
       <dt>日付</dt>
-      <dd><%= @post.date %></dd>
+      <dd><%= l @post.date, format: :dot %></dd>
 
       <dt>店名・商品名</dt>
       <dd><%= @post.name %></dd>

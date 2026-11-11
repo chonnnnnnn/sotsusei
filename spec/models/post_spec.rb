@@ -136,4 +136,31 @@ RSpec.describe Post do
       expect(post).not_to be_valid
     end
   end
+
+  describe "日本語化(i18n)" do
+    it "エラーメッセージの属性名が日本語で表示される" do
+      post = Post.new(valid_eat_out_attributes.merge(name: nil, genre: nil))
+      post.valid?
+      expect(post.errors.full_messages).to include("店名・商品名を入力してください")
+      expect(post.errors.full_messages).to include("ジャンルを入力してください")
+    end
+  end
+
+  describe "タイムゾーン(JST)" do
+    it "作成日時がJST(Asia/Tokyo)として表示される" do
+      travel_to Time.zone.local(2026, 1, 15, 10, 30, 0) do
+        post = Post.create!(valid_eat_out_attributes)
+        expect(post.created_at.time_zone.name).to eq("Tokyo")
+        expect(post.created_at.strftime("%H:%M")).to eq("10:30")
+      end
+    end
+
+    it "DB上はUTCで保存されている" do
+      travel_to Time.zone.local(2026, 1, 15, 10, 30, 0) do
+        post = Post.create!(valid_eat_out_attributes)
+        # JST 10:30 は UTC 01:30 のはず
+        expect(post.created_at.getutc.strftime("%H:%M")).to eq("01:30")
+      end
+    end
+  end
 end

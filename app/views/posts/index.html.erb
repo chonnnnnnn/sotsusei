@@ -98,7 +98,7 @@
                 <div class="p-stack-md pb-0 flex flex-col gap-unit">
                   <div class="flex justify-between items-start">
                     <span class="font-label-sm text-label-sm text-primary bg-primary-fixed px-2 py-0.5 rounded"><%= post.genre_label %></span>
-                    <span class="text-on-surface-variant font-label-sm text-label-sm"><%= post.date.strftime("%Y.%m.%d") %></span>
+                    <span class="text-on-surface-variant font-label-sm text-label-sm"><%= l post.date, format: :dot %></span>
                   </div>
                   <h3 class="font-title-md text-title-md text-on-surface line-clamp-1"><%= post.name %></h3>
                   <p class="text-on-surface-variant font-body-md text-body-md line-clamp-1"><%= post.prefecture.presence || "―" %></p>
@@ -255,7 +255,7 @@
                   <p class="text-on-surface-variant text-body-md line-clamp-2 mb-4"><%= post.memo.presence || "メモはありません" %></p>
                   <div class="flex items-center justify-between">
                     <span class="text-label-sm text-outline font-bold"><%= post.genre_label %></span>
-                    <span class="text-on-surface-variant font-bold text-label-md"><%= post.date.strftime("%Y.%m.%d") %></span>
+                    <span class="text-on-surface-variant font-bold text-label-md"><%= l post.date, format: :dot %></span>
                   </div>
                 </div>
               <% end %>
@@ -329,5 +329,5 @@
     <% end %>
 
     <%= link_to "投稿する", new_post_path, class: "btn" %>
-  </div>
+  <%= l post.date, format: :dot %></div>
 <% end %>

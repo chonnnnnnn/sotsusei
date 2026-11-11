@@ -72,4 +72,7 @@ RSpec.configure do |config|
 
   # request specで`sign_in user`が使えるようにする
   config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # `travel_to`で時刻を固定したテストを書けるようにする
+  config.include ActiveSupport::Testing::TimeHelpers
 end
