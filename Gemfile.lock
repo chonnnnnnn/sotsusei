@@ -84,7 +84,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.24.6)
       msgpack (~> 1.2)
-    brakeman (8.0.6)
+    brakeman (8.1.0)
       racc
     builder (3.3.0)
     capybara (3.40.0)
@@ -118,6 +118,7 @@ GEM
     devise-i18n (1.16.0)
       devise (>= 5.0.0)
       rails-i18n
+    diff-lcs (1.6.2)
     drb (2.2.3)
     erb (6.0.6)
     erubi (1.13.1)
@@ -266,6 +267,23 @@ GEM
       actionpack (>= 7.0)
       railties (>= 7.0)
     rexml (3.4.4)
+    rspec-core (3.13.6)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.5)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.8)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-rails (8.0.4)
+      actionpack (>= 7.2)
+      activesupport (>= 7.2)
+      railties (>= 7.2)
+      rspec-core (>= 3.13.0, < 5.0.0)
+      rspec-expectations (>= 3.13.0, < 5.0.0)
+      rspec-mocks (>= 3.13.0, < 5.0.0)
+      rspec-support (>= 3.13.0, < 5.0.0)
+    rspec-support (3.13.7)
     rubocop (1.88.2)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -369,6 +387,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 7.2.3, >= 7.2.3.1)
   rails-i18n
+  rspec-rails
   rubocop-rails-omakase
   selenium-webdriver
   sprockets-rails
