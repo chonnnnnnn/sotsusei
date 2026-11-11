@@ -7,15 +7,15 @@ RSpec.describe PostsHelper do
 
   describe "#repeat_intention_icon" do
     it "リピ確定(yes)のときfavoriteアイコン・primary色を返す" do
-      expect(helper.repeat_intention_icon(build_post("yes"))).to eq(["favorite", "text-primary"])
+      expect(helper.repeat_intention_icon(build_post("yes"))).to eq([ "favorite", "text-primary" ])
     end
 
     it "検討中(undecided)のときpendingアイコン・secondary色を返す" do
-      expect(helper.repeat_intention_icon(build_post("undecided"))).to eq(["pending", "text-secondary"])
+      expect(helper.repeat_intention_icon(build_post("undecided"))).to eq([ "pending", "text-secondary" ])
     end
 
     it "次は別の(no)のときdo_not_disturb_onアイコンを返す" do
-      expect(helper.repeat_intention_icon(build_post("no"))).to eq(["do_not_disturb_on", "text-on-surface-variant"])
+      expect(helper.repeat_intention_icon(build_post("no"))).to eq([ "do_not_disturb_on", "text-on-surface-variant" ])
     end
   end
 
@@ -31,11 +31,11 @@ RSpec.describe PostsHelper do
 
   describe "#repeat_intention_selector_icon" do
     it "リピ確定(yes)のとき絵文字風アイコンを返す" do
-      expect(helper.repeat_intention_selector_icon("yes")).to eq(["sentiment_very_satisfied", "text-tertiary"])
+      expect(helper.repeat_intention_selector_icon("yes")).to eq([ "sentiment_very_satisfied", "text-tertiary" ])
     end
 
     it "未知の値のときデフォルトのアイコンを返す" do
-      expect(helper.repeat_intention_selector_icon("unknown")).to eq(["help", "text-on-surface-variant"])
+      expect(helper.repeat_intention_selector_icon("unknown")).to eq([ "help", "text-on-surface-variant" ])
     end
   end
 end
