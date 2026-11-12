@@ -26,7 +26,7 @@ module App
     # このアプリで使う言語は日本語のみ
     config.i18n.available_locales = [ :ja ]
     # config/locales/models/ja.yml のようなサブフォルダ内の翻訳ファイルも読み込む
-    config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*.{rb,yml}")]
+    config.i18n.load_path += Rails.root.glob("config/locales/**/*.{rb,yml}")
 
     # テストフレームワークをRSpecに統一しているため、`rails generate`でも
     # Minitestのテストファイルではなくspec/配下にRSpecのファイルを生成する
