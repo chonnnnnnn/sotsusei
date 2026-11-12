@@ -1,8 +1,53 @@
-# Omakase Ruby styling for Rails
+# ===========================================
+# sotsusei の RuboCop 設定
+# 方針：
+#   1. 見た目のルールは Rails 公式（omakase）に合わせる
+#   2. Rails らしい書き方・RSpec の書き方もチェックする
+#   3. 自動で作られるファイルはチェックしない
+#   4. 日本語のテスト説明を使えるようにする
+# ===========================================
+
+# Rails 公式のおすすめ設定を土台にする
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.4
+  NewCops: enable          # 新しく増えたルールも自動でオンにする
+  SuggestExtensions: false # 「この拡張も入れたら？」というおすすめを出さない
+  Exclude:
+    - "bin/**/*"
+    - "db/schema.rb"
+    - "node_modules/**/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
+
+# ---------- Rails ----------
+# omakase は Rails のルールをまとめてオフにしているので、オンに戻す
+Rails:
+  Enabled: true
+
+# フラッシュメッセージなどに日本語を直接書いているので、今はオフ
+# （i18n にそろえるときにオンにする）
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+# ---------- RSpec ----------
+# context は「〜の場合」のように日本語で書きたいので、英語で始まる決まりをオフ
+RSpec/ContextWording:
+  Enabled: false
+
+# 1つのテストの行数（初期値5行は短すぎるので少し増やす）
+RSpec/ExampleLength:
+  Max: 15
+
+# 1つのテストで expect を何回まで使えるか
+RSpec/MultipleExpectations:
+  Max: 3
+
+# describe / context の入れ子を何段まで許すか
+RSpec/NestedGroups:
+  Max: 4

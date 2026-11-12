@@ -21,12 +21,16 @@ class PostsController < ApplicationController
     end
   end
 
+  def show
+  end
   def new
     @post = current_user.posts.build
     @post.post_type = params[:post_type] if Post.post_types.key?(params[:post_type])
     @post.date = Date.current
   end
 
+  def edit
+  end
   def create
     @post = current_user.posts.build(post_params)
 
@@ -37,11 +41,7 @@ class PostsController < ApplicationController
     end
   end
 
-  def show
-  end
 
-  def edit
-  end
 
   def update
     if @post.update(post_params)
