@@ -76,3 +76,7 @@ gem "devise-i18n"
 
 gem "cloudinary", "~> 2.0"
 gem "image_processing", "~> 1.2" # リサイズ等を行う場合
+
+# Error monitoring [https://docs.sentry.io/platforms/ruby/guides/rails/]
+gem "sentry-ruby"
+gem "sentry-rails"
